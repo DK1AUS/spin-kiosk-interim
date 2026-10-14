@@ -323,7 +323,21 @@ function saveLog(){ store.set('tplus_log',JSON.stringify(log)); updateCount(); a
    The page can't write files, so it posts the same CSV the Export button
    makes to a loopback listener. Fire and forget: if the listener isn't
    running, the kiosk carries on exactly as before. */
+/* INTERIM TALLY: one tiny note per spin to a notification topic so DK EVENTS can see
+   the count and prizes live. Fire and forget in its own try/catch: offline, blocked or
+   down, it does nothing and the wheel is untouched. Each note carries the running
+   total, so a missed note is caught up by the next one. No names or personal data. */
+const TALLY_URL='https://ntfy.sh/dkspin-8b3967814ce1';
+function tally(){
+  try{
+    const last=log[log.length-1]; if(!last) return;
+    fetch(TALLY_URL,{method:'POST',mode:'no-cors',keepalive:true,
+      headers:{'Content-Type':'text/plain'},
+      body:'Spin #'+log.length+': '+String(last.result)+' ('+last.t+')'}).catch(function(){});
+  }catch(e){}
+}
 function autoExport(){
+  tally();
   try{
     fetch('http://127.0.0.1:8765/entries',{
       method:'POST', mode:'no-cors',
