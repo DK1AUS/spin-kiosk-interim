@@ -328,12 +328,20 @@ function saveLog(){ store.set('tplus_log',JSON.stringify(log)); updateCount(); a
    down, it does nothing and the wheel is untouched. Each note carries the running
    total, so a missed note is caught up by the next one. No names or personal data. */
 const TALLY_URL='https://ntfy.sh/dkspin-8b3967814ce1';
+/* Optional ?site=name in the address labels each wheel, e.g. spin.dk.events/?site=bundaberg.
+   Letters, numbers, dash and underscore only, 24 characters max; anything else is dropped. */
+function tallySite(){
+  try{
+    const v=(new URLSearchParams(location.search).get('site')||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,24);
+    return v ? '['+v+'] ' : '';
+  }catch(e){ return ''; }
+}
 function tally(){
   try{
     const last=log[log.length-1]; if(!last) return;
     fetch(TALLY_URL,{method:'POST',mode:'no-cors',keepalive:true,
       headers:{'Content-Type':'text/plain'},
-      body:'Spin #'+log.length+': '+String(last.result)+' ('+last.t+')'}).catch(function(){});
+      body:tallySite()+'Spin #'+log.length+': '+String(last.result)+' ('+last.t+')'}).catch(function(){});
   }catch(e){}
 }
 function autoExport(){
