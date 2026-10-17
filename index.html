@@ -581,12 +581,12 @@ setInterval(function(){
 },180000);
 
 /* ===== TRIGGERS ===== */
-/* ===== INTERIM LOAN: stops working after the end of Sat 17 Oct 2026 (Perth time) ===== */
-const INTERIM_EXPIRES=new Date('2026-10-18T00:00:00+08:00').getTime();
+/* ===== INTERIM LOAN: stops working after the end of Sun 18 Oct 2026 (Perth time) ===== */
+const INTERIM_EXPIRES=new Date('2026-10-19T00:00:00+08:00').getTime();
 function interimExpired(){ return Date.now()>=INTERIM_EXPIRES; }
 (function(){
   const tag=document.createElement('div');
-  tag.textContent='Interim loan version \u00b7 DK EVENTS \u00b7 valid to 17 Oct 2026';
+  tag.textContent='Interim loan version \u00b7 DK EVENTS \u00b7 valid to 18 Oct 2026';
   tag.style.cssText='position:fixed;right:14px;bottom:10px;z-index:5;font:600 12px/1.2 system-ui,sans-serif;color:rgba(255,255,255,.6);pointer-events:none;letter-spacing:.02em';
   document.body.appendChild(tag);
   const box=document.createElement('div');
